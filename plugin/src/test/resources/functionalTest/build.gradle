@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'de.pipiobjo.gradle.plugin.GanttGradleTaskPlugin'
+}
+
+task taskA{
+    doFirst{
+        project.logger.info("doFirst: task A")
+    }
+    doLast{
+        project.logger.info("doLast: task A")
+    }
+}
+
+
+task taskB{
+    dependsOn( taskA)
+    doFirst{
+        project.logger.info("doFirst: task B")
+    }
+    doLast{
+        project.logger.info("doLast: task B")
+    }
+}
+
+check.dependsOn(taskB)

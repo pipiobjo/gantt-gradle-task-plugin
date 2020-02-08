@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <title>Gradle + Webpack Demo</title>
+  </head>
+  <body>
+  <div id="chart-container"></div>
+  <script>
+    var data = [
+      {
+        "name": ":testClasses",
+        "start": 1231,
+        "end": 1231,
+        "deps": [
+          ":processTestResources",
+          ":compileTestJava"
+        ]
+      },
+      {
+        "name": ":build",
+        "start": 1237,
+        "end": 1237,
+        "deps": [
+          ":check",
+          ":assemble"
+        ]
+      },
+      {
+        "name": ":check",
+        "start": 1236,
+        "end": 1236,
+        "deps": [
+          ":taskB",
+          ":test"
+        ]
+      },
+      {
+        "name": ":assemble",
+        "start": 1206,
+        "end": 1206,
+        "deps": [
+          ":jar"
+        ]
+      },
+      {
+        "name": ":classes",
+        "start": 1114,
+        "end": 1115,
+        "deps": [
+          ":compileJava",
+          ":processResources"
+        ]
+      },
+      {
+        "name": ":jar",
+        "start": 1152,
+        "end": 1201,
+        "deps": [
+          ":classes"
+        ]
+      },
+      {
+        "name": ":taskB",
+        "start": 1224,
+        "end": 1224,
+        "deps": [
+          ":taskA"
+        ]
+      },
+      {
+        "name": ":taskA",
+        "start": 1208,
+        "end": 1222,
+        "deps": []
+      }
+    ];
+  </script>
+
+  </body>
+</html>
+

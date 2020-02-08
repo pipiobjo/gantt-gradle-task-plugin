@@ -1,0 +1,3 @@
+Lock version
+
+https://github.com/webpack-contrib/css-loader/issues/1019

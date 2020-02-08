@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
+
+
+rootProject.name = 'gantt-gradle-task-plugin'
+include 'plugin'
+include 'ui'

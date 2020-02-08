@@ -1,0 +1,199 @@
+<html>
+<head>
+    <title>hello-world build gantt chart</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script> <!-- TODO use plugin property -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            font-family: sans-serif;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        #chart-container {
+            position: absolute;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            left: 10px;
+            right: 10px;
+        }
+
+        input, label{
+            vertical-align: middle;
+        }
+
+        input[type=number] {
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+<h2>hello-world</h2>
+<div>
+    <input type="checkbox" id="hideDust"/><label for="hideDust">Hide tasks shorter than</label>
+    <input type="number" id="dustThresholdMs" min="0"><label for="dustThresholdMs">ms</label>
+    <label for="dustThresholdPercent">(</label><input type="number" id="dustThresholdPercent" min="0" max="100"><label for="dustThresholdPercent">%)</label>
+</div>
+<div id="chart-container"></div>
+<script>
+    var data = [{"name":":testClasses","start": 1231,"end": 1231,"deps": [":processTestResources",":compileTestJava"]},{"name":":build","start": 1237,"end": 1237,"deps": [":check",":assemble"]},{"name":":check","start": 1236,"end": 1236,"deps": [":taskB",":test"]},{"name":":assemble","start": 1206,"end": 1206,"deps": [":jar"]},{"name":":classes","start": 1114,"end": 1115,"deps": [":compileJava",":processResources"]},{"name":":jar","start": 1152,"end": 1201,"deps": [":classes"]},{"name":":taskB","start": 1224,"end": 1224,"deps": [":taskA"]},{"name":":taskA","start": 1208,"end": 1222,"deps": []}];
+</script>
+
+<script>
+    var CHART_SIZE_SETTING = {
+        barHeight: 30,
+        barSpacing: 15,
+    }
+
+    var COLOR_PALETTE = [
+        "rgb(244, 67, 54)",
+        "rgb(233, 30, 99)",
+        "rgb(156, 39, 176)",
+        "rgb(103, 58, 183)",
+        "rgb(63, 81, 181)",
+        "rgb(33, 150, 243)",
+        "rgb(3, 169, 244)",
+        "rgb(0, 188, 212)",
+        "rgb(0, 150, 136)",
+        "rgb(76, 175, 80)",
+        "rgb(139, 195, 74)",
+        "rgb(205, 220, 57)",
+        "rgb(255, 235, 59)",
+        "rgb(255, 193, 7)",
+        "rgb(255, 152, 0)",
+        "rgb(255, 87, 34)",
+        "rgb(121, 85, 72)",
+        "rgb(158, 158, 158)",
+        "rgb(96, 125, 139)"
+    ];
+
+    data.sort(function (a, b) {
+        return a.start - b.start;
+    });
+
+    function toHumanReadableTime(timeMillis) {
+        var ms = timeMillis % 1000;
+        var s = Math.floor(timeMillis / 1000) % 60;
+        var min = Math.floor(timeMillis / (1000 * 60)) % 60;
+        var h = Math.floor(timeMillis / (1000 * 60 * 60));
+
+        var humanReadable = "";
+
+        if (h > 0) {
+            humanReadable += h + "h";
+        }
+        if (min > 0) {
+            humanReadable += min + "min";
+        }
+        if (s > 0) {
+            humanReadable += s + "s";
+        }
+        if (ms > 0 && h === 0 && min === 0) {
+            humanReadable += ms + "ms";
+        }
+        return humanReadable;
+    }
+
+    var VIRTUAL_CHART_WIDTH = 1000;
+
+    var TASK_TYPE_TO_COLOR = (function() {
+        var taskTypeToColor = new Map();
+        var colors = COLOR_PALETTE.slice();
+        for (var i = 0; i < data.length; i ++) {
+            var taskType = data[i].type;
+            if (!taskTypeToColor.has(taskType) && colors.length > 0) {
+                taskTypeToColor.set(taskType, colors.pop());
+            }
+        }
+        return taskTypeToColor;
+    }) ();
+
+    var svg = d3.select("#chart-container")
+        .append("svg")
+        .attr("preserveAspectRatio", "none")
+        .attr("width", "100%");
+
+    var min = d3.min(data, function(d) { return d.start });
+    var max = d3.max(data, function(d) { return d.end; });
+    var xScale = d3.scaleLinear()
+        .domain([min, max])
+        .range([0, VIRTUAL_CHART_WIDTH]);
+
+    function draw(data) {
+        var chartHeight = data.length * (CHART_SIZE_SETTING.barHeight + CHART_SIZE_SETTING.barSpacing);
+        svg.selectAll("rect").remove();
+        svg.attr("height", chartHeight)
+            .attr("viewBox","0 0 " + VIRTUAL_CHART_WIDTH + " " + chartHeight)
+            .selectAll("rect")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("x",  function(d, i) {
+                return xScale(d.start);
+            })
+            .attr("y", function(d, i) {
+                return i * (CHART_SIZE_SETTING.barHeight + CHART_SIZE_SETTING.barSpacing);
+            })
+            .attr("width", function(d) {
+                return xScale(d.end) - xScale(d.start) + 1;
+            })
+            .style("fill", function(d) {
+                if (TASK_TYPE_TO_COLOR.has(d.type)) {
+                    return TASK_TYPE_TO_COLOR.get(d.type);
+                }
+                return '000';
+            })
+            .attr("height", CHART_SIZE_SETTING.barHeight)
+            .append("title")
+            .text(function(d) {
+                return d.name + " " + toHumanReadableTime(d.end - d.start);
+            });
+    }
+
+    function redraw() {
+        if (document.getElementById("hideDust").checked) {
+            var thresholdAsString = document.getElementById("dustThresholdMs").value.trim();
+            if (thresholdAsString.match(/^[0-9]+$/)) {
+                var threshold = parseInt(thresholdAsString, 10);
+                draw(data.filter(e => (e.end - e.start) > threshold));
+            }
+        } else {
+            draw(data);
+        }
+    }
+
+    function recalculateThresholdPercent() {
+        var thresholdAsString = document.getElementById("dustThresholdMs").value.trim();
+        if (thresholdAsString.match(/^[0-9]+$/)) {
+            var threshold = parseInt(thresholdAsString, 10);
+            document.getElementById("dustThresholdPercent").value = threshold / (max - min);
+        }
+    }
+
+    function recalculateThresholdMs() {
+        var thresholdAsString = document.getElementById("dustThresholdPercent").value.trim();
+        if (thresholdAsString.match(/^[0-9]+(\.[0-9]+)?$/)) {
+            var threshold = parseFloat(thresholdAsString, 10);
+            document.getElementById("dustThresholdMs").value = Math.round(threshold * (max - min) / 100);
+        }
+    }
+
+    d3.select("#hideDust")
+        .on("click", redraw);
+
+    d3.select("#dustThresholdMs")
+        .on("change", _ => recalculateThresholdPercent() || redraw())
+
+    d3.select("#dustThresholdPercent")
+        .on("change", _ => recalculateThresholdMs() || redraw())
+
+    draw(data);
+</script>
+</body>
+</html>

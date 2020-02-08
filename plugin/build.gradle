@@ -1,0 +1,58 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.10.1'
+    id 'java'
+//    id 'de.pipiobjo.gradle.plugin.GanttGradleTaskPlugin'
+}
+
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+
+sourceCompatibility = JavaVersion.VERSION_12
+targetCompatibility = JavaVersion.VERSION_12
+//
+configurations {
+    npmResources
+    compileClasspath.extendsFrom(npmResources)
+}
+dependencies {
+    implementation project(':ui')
+    npmResources project(":ui")
+
+    testImplementation gradleTestKit()
+    testImplementation 'junit:junit:4.12'
+    testImplementation("org.assertj:assertj-core:3.11.1")
+}
+
+
+processResources {
+    doLast{
+        copy{
+        from {
+            configurations.npmResources.collect {zipTree(it)}
+        }
+        into "$buildDir/resources"
+        }
+    }
+}
+
+jar {
+    from configurations.npmResources
+}
+
+
+// https://docs.gradle.org/current/userguide/java_gradle_plugin.html#java_gradle_plugin
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'de.pipiobjo.gradle.plugin.GanttGradleTaskPlugin'
+            implementationClass = 'de.pipiobjo.gradle.plugin.GanttGradleTaskPlugin'
+        }
+    }
+}

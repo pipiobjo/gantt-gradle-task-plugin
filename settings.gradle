@@ -1,4 +1,11 @@
 pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.namespace == 'de.pipiobjo.gradle.plugin') {
+                useModule('de.pipiobjo.gradle:plugin:0.0.1-SNAPSHOT')
+            }
+        }
+    }
     repositories {
         mavenLocal()
         gradlePluginPortal()

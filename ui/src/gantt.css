@@ -1,0 +1,39 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.bar-chart {
+    width: 95%;
+    height: 95%
+}
+
+.d3-axis {
+    font-family: 'Arial', sans-serif;
+    font-size: 10px;
+}
+
+.d3-line {
+    fill: none;
+    stroke: #d0d0d0;
+}
+
+.d3-axis path,
+.d3-axis line {
+    fill: none;
+    stroke: #e6e6e6;
+    shape-rendering: crispEdges;
+}
+
+.d3-rect {
+    fill: #d8d8d8;
+}
+
+.d3-vlabel {
+    font-family: 'Arial', sans-serif;
+    fill: #555;
+    font-size: 12px;
+}

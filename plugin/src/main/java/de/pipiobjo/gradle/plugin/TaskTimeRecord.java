@@ -1,5 +1,7 @@
 package de.pipiobjo.gradle.plugin;
 
+import org.gradle.api.tasks.TaskState;
+
 import java.util.List;
 
 public class TaskTimeRecord {
@@ -7,6 +9,7 @@ public class TaskTimeRecord {
     private long startTimeMillis;
     private long endTimeMillis;
     private List<String> taskDependencies;
+    private TaskState state;
 
     public String getTaskPath() {
         return taskPath;
@@ -38,5 +41,9 @@ public class TaskTimeRecord {
 
     public void setTaskDependencies(List<String> taskDependencies) {
         this.taskDependencies = taskDependencies;
+    }
+
+    public void setStatus(TaskState state) {
+        this.state = state;
     }
 }

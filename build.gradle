@@ -1,3 +1,7 @@
+plugins{
+    id 'de.pipiobjo.gradle.plugin.GanttGradleTaskPlugin' version "0.0.1-SNAPSHOT"
+}
+
 defaultTasks 'build'
 
 wrapper {

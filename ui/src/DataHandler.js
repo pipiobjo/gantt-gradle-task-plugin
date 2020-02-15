@@ -6,6 +6,18 @@ class DataHandler {
         this.data = data;
     }
 
+    isTaskTupleOnCriticalPath(child, parent, criticalPath){
+        let childIdx = criticalPath.findIndex(x => x === child);
+        let parentIdx = criticalPath.findIndex(x => x === parent);
+
+        if(childIdx >= 0 && parentIdx >= 0){
+            if(childIdx +1 === parentIdx){
+                return true
+            }
+        }
+        return false
+    }
+
 
     calculateCriticalPath() {
         const tasksById =  {}
@@ -25,6 +37,7 @@ class DataHandler {
         this.buildCriticalPath(taskList, criticalPath, tasksById)
 
         console.log("this is the critical path ", criticalPath)
+        return criticalPath
 
     };
 

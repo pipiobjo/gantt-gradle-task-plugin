@@ -15,7 +15,7 @@ const createDataCacheById = data => {
     }, {});
 }
 
-const createChartSVG = (data, placeholder, {svgWidth, svgHeight, elementHeight, scaleWidth, scaleHeight, fontSize, minStartDate, maxEndDate, margin, showRelations}) => {
+const createChartSVG = (data, placeholder, {svgWidth, svgHeight, elementHeight, scaleWidth, scaleHeight, fontSize, minStartDate, maxEndDate, margin, criticalPath}) => {
     // create container element for the whole chart
     const svg = d3.select(placeholder).append('svg')
 
@@ -31,7 +31,7 @@ const createChartSVG = (data, placeholder, {svgWidth, svgHeight, elementHeight, 
     const rectangleData = createElementData(data, elementHeight, xScale, fontSize);
 
     // create data describing connections' lines
-    const polylineData = createPolylineData(rectangleData, elementHeight);
+    const polylineData = createPolylineData(rectangleData, elementHeight, criticalPath);
 
     const xAxis = d3.axisBottom(xScale);
 
@@ -108,6 +108,7 @@ const createChartSVG = (data, placeholder, {svgWidth, svgHeight, elementHeight, 
             .append('polyline')
             .style('fill', 'none')
             .style('stroke', d => d.color)
+            .style('stroke-width', d => d.thickness)
             .attr('points', d => d.points);
     // }
 
@@ -155,7 +156,7 @@ const createElementData = (data, elementHeight, xScale, fontSize) =>
 
 
 // chart.renderTo("#chart-container");
-const createPolylineData = (rectangleData, elementHeight) => {
+const createPolylineData = (rectangleData, elementHeight, criticalPath) => {
     // prepare dependencies polyline data
     const cachedData = createDataCacheById(rectangleData);
 
@@ -169,11 +170,25 @@ const createPolylineData = (rectangleData, elementHeight) => {
                 return cachedData[parentId]
             })
             .map(parent => {
-                const color = '#' + (Math.max(0.1, Math.min(0.9, Math.random())) * 0xFFF << 0).toString(16);
+
+                let isTaskTupleOnCriticalPath = dataHandler.isTaskTupleOnCriticalPath(d.id, parent.id, criticalPath);
+
+                let color
+                let thickness
+                if(isTaskTupleOnCriticalPath){
+                    color = 'red'
+                    thickness = 3
+                }else{
+
+                    color = '#' + (Math.max(0.1, Math.min(0.9, Math.random())) * 0xFFF << 0).toString(16);
+                    thickness = 1
+                }
 
                 // increase the amount rows occupied by both parent and current element (d)
                 storedConnections[parent.id]++;
                 storedConnections[d.id]++;
+
+
 
                 const deltaParentConnections = storedConnections[parent.id] * (elementHeight / 4);
                 const deltaChildConnections = storedConnections[d.id] * (elementHeight / 4);
@@ -189,7 +204,8 @@ const createPolylineData = (rectangleData, elementHeight) => {
 
                 return {
                     points: points.join(','),
-                    color
+                    color,
+                    thickness
                 };
             })
     );
@@ -197,7 +213,7 @@ const createPolylineData = (rectangleData, elementHeight) => {
 
 const createGanttChart = (placeholder, data, {elementHeight, sortMode, showRelations, svgOptions}) => {
 
-    dataHandler.calculateCriticalPath(data);
+    const criticalPath = dataHandler.calculateCriticalPath(data);
 
     // prepare data
     const margin = (svgOptions && svgOptions.margin) || {
@@ -237,7 +253,7 @@ const createGanttChart = (placeholder, data, {elementHeight, sortMode, showRelat
         minStartDate,
         maxEndDate,
         margin,
-        showRelations
+        criticalPath
     });
 
 };

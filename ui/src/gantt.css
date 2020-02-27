@@ -6,6 +6,15 @@ body {
     padding: 0;
 }
 
+/*.task-container rect {*/
+/*    fill: coral;*/
+/*}*/
+
+.taskBox {
+    fill: #FFBB33;
+}
+
+
 .bar-chart {
     width: 95%;
     height: 95%

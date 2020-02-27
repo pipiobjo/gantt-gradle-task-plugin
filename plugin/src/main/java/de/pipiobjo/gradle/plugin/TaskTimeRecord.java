@@ -46,4 +46,6 @@ public class TaskTimeRecord {
     public void setStatus(TaskState state) {
         this.state = state;
     }
+
+    public TaskState getStatus() { return this.state; }
 }

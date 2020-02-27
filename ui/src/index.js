@@ -52,7 +52,7 @@ const createChartSVG = (data, placeholder, {svgWidth, svgHeight, elementHeight, 
 
 
     const singlebar = bars.append('g')
-        .attr('id', 'bar-container')
+        .attr('class', 'task-container')
         .attr('transform', d => {
             return `translate(${d.x},${d.y})`
         });
@@ -61,7 +61,7 @@ const createChartSVG = (data, placeholder, {svgWidth, svgHeight, elementHeight, 
         .append('rect')
 
         .attr('taskPath', d => {
-            'test'
+            return d.taskPath
         })
         .attr('width', d => {
             return d.width;
@@ -69,9 +69,8 @@ const createChartSVG = (data, placeholder, {svgWidth, svgHeight, elementHeight, 
         .attr('height', d => {
             return d.height;
         })
-        .style("fill", "orange")
-        // .style("stroke", "black")
-        // .style("stroke-width", "2")
+        .attr('class', 'taskBox')
+        // .style("fill", "orange")
         .enter()
 
 
@@ -171,7 +170,7 @@ const createPolylineData = (rectangleData, elementHeight, criticalPath) => {
             })
             .map(parent => {
 
-                let isTaskTupleOnCriticalPath = dataHandler.isTaskTupleOnCriticalPath(d.id, parent.id, criticalPath);
+                const isTaskTupleOnCriticalPath = dataHandler.isTaskTupleOnCriticalPath(d.id, parent.id, criticalPath);
 
                 let color
                 let thickness

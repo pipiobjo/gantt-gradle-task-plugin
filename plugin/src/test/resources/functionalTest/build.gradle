@@ -3,6 +3,10 @@ plugins {
     id 'de.pipiobjo.gradle.plugin.GanttGradleTaskPlugin'
 }
 
+gantt{
+    jsonToFile = true
+}
+
 task taskA{
     doFirst{
         project.logger.info("doFirst: task A")

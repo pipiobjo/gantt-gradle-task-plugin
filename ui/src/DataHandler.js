@@ -32,11 +32,10 @@ class DataHandler {
 
         // find max accumulateDuration in task list and step through the graph
         const taskList = Object.values(tasksById);
-        console.log("taskList with accumulatedDurations", taskList)
         const criticalPath = [];
         this.buildCriticalPath(taskList, criticalPath, tasksById)
 
-        console.log("this is the critical path ", criticalPath)
+        console.log("detected critical path ", criticalPath)
         return criticalPath
 
     };
@@ -52,10 +51,8 @@ class DataHandler {
         });
         if (maxidx > -1) {
             const cpEntry = deps[maxidx]
-            console.log("criticalPathEntry", cpEntry)
             criticalPath.push(cpEntry.taskPath)
             const newDeps = cpEntry.taskDependencies.map(x => tasksById[x]);
-            console.log("newDeps", newDeps)
             this.buildCriticalPath(newDeps, criticalPath, tasksById)
         }
     }

@@ -1,0 +1,91 @@
+<html>
+<head>
+    <title>Gradle + Webpack Demo</title>
+</head>
+<body>
+<div id="chart-container"></div>
+<script>
+    var data = [{
+        "taskPath": ":compileJava",
+        "startTimeMillis": 1119,
+        "endTimeMillis": 1162,
+        "taskDependencies": [],
+        "state": {"executing": false, "actionable": true, "didWork": false, "outcome": "NO_SOURCE"}
+    }, {
+        "taskPath": ":testClasses",
+        "startTimeMillis": 1305,
+        "endTimeMillis": 1305,
+        "taskDependencies": [":processTestResources", ":compileTestJava"],
+        "state": {"executing": false, "actionable": false, "didWork": false, "outcome": "UP_TO_DATE"}
+    }, {
+        "taskPath": ":build",
+        "startTimeMillis": 1313,
+        "endTimeMillis": 1313,
+        "taskDependencies": [":check", ":assemble"],
+        "state": {"executing": false, "actionable": false, "didWork": false, "outcome": "EXECUTED"}
+    }, {
+        "taskPath": ":processTestResources",
+        "startTimeMillis": 1303,
+        "endTimeMillis": 1304,
+        "taskDependencies": [],
+        "state": {"executing": false, "actionable": true, "didWork": false, "outcome": "NO_SOURCE"}
+    }, {
+        "taskPath": ":classes",
+        "startTimeMillis": 1180,
+        "endTimeMillis": 1180,
+        "taskDependencies": [":compileJava", ":processResources"],
+        "state": {"executing": false, "actionable": false, "didWork": false, "outcome": "UP_TO_DATE"}
+    }, {
+        "taskPath": ":taskB",
+        "startTimeMillis": 1293,
+        "endTimeMillis": 1294,
+        "taskDependencies": [":taskA"],
+        "state": {"executing": false, "actionable": true, "didWork": true, "outcome": "EXECUTED"}
+    }, {
+        "taskPath": ":taskA",
+        "startTimeMillis": 1276,
+        "endTimeMillis": 1292,
+        "taskDependencies": [],
+        "state": {"executing": false, "actionable": true, "didWork": true, "outcome": "EXECUTED"}
+    }, {
+        "taskPath": ":test",
+        "startTimeMillis": 1307,
+        "endTimeMillis": 1311,
+        "taskDependencies": [":testClasses", ":classes"],
+        "state": {"executing": false, "actionable": true, "didWork": false, "outcome": "NO_SOURCE"}
+    }, {
+        "taskPath": ":check",
+        "startTimeMillis": 1312,
+        "endTimeMillis": 1312,
+        "taskDependencies": [":test", ":taskB"],
+        "state": {"executing": false, "actionable": false, "didWork": false, "outcome": "EXECUTED"}
+    }, {
+        "taskPath": ":assemble",
+        "startTimeMillis": 1274,
+        "endTimeMillis": 1274,
+        "taskDependencies": [":jar"],
+        "state": {"executing": false, "actionable": false, "didWork": false, "outcome": "EXECUTED"}
+    }, {
+        "taskPath": ":processResources",
+        "startTimeMillis": 1176,
+        "endTimeMillis": 1178,
+        "taskDependencies": [],
+        "state": {"executing": false, "actionable": true, "didWork": false, "outcome": "NO_SOURCE"}
+    }, {
+        "taskPath": ":jar",
+        "startTimeMillis": 1188,
+        "endTimeMillis": 1273,
+        "taskDependencies": [":classes"],
+        "state": {"executing": false, "actionable": true, "didWork": true, "outcome": "EXECUTED"}
+    }, {
+        "taskPath": ":compileTestJava",
+        "startTimeMillis": 1296,
+        "endTimeMillis": 1302,
+        "taskDependencies": [":classes"],
+        "state": {"executing": false, "actionable": true, "didWork": false, "outcome": "NO_SOURCE"}
+    }];
+</script>
+
+</body>
+</html>
+

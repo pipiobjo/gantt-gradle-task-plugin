@@ -1,10 +1,19 @@
-
 .gradle/
-
 .idea/
-
+<<<<<<< HEAD
 build/
-
 plugin/out/
-
 ui/node_modules/
+ui/build/
+<<<<<<< HEAD
+plugin/out/
+=======
+
+=======
+plugin/build/
+plugin/out/
+ui/node_modules/
+ui/build/
+>>>>>>> cleanup
+build/
+>>>>>>> make plugin configurable, add parameterized test for different gradle versions add github action to build

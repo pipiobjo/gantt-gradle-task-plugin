@@ -81,3 +81,17 @@ gradlePlugin {
         }
     }
 }
+
+pluginBundle {
+    website = 'https://github.com/pipiobjo/gantt-gradle-task-plugin'
+    vcsUrl = 'https://github.com/pipiobjo/gantt-gradle-task-plugin'
+    description = 'Trace your gradle tasks via gantt'
+    tags = ['reporting', 'gantt', 'build-visualization']
+
+    plugins {
+        greetingsPlugin {
+            // id is captured from java-gradle-plugin configuration
+            displayName = 'Gantt task plugin'
+        }
+    }
+}

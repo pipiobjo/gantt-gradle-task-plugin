@@ -1,0 +1,10 @@
+
+.gradle/
+
+.idea/
+
+build/
+
+plugin/out/
+
+ui/node_modules/

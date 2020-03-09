@@ -75,7 +75,7 @@ jar {
 // https://docs.gradle.org/current/userguide/java_gradle_plugin.html#java_gradle_plugin
 gradlePlugin {
     plugins {
-        simplePlugin {
+        ganttGradleTaskPlugin {
             id = 'de.pipiobjo.gradle.plugin.GanttGradleTaskPlugin'
             implementationClass = 'de.pipiobjo.gradle.plugin.GanttGradleTaskPlugin'
         }
@@ -89,7 +89,7 @@ pluginBundle {
     tags = ['reporting', 'gantt', 'build-visualization']
 
     plugins {
-        greetingsPlugin {
+        ganttGradleTaskPlugin {
             // id is captured from java-gradle-plugin configuration
             displayName = 'Gantt task plugin'
         }

@@ -32,7 +32,6 @@ node {
 
 npm_run_build {
     // make sure the build task is executed only when appropriate files change
-//    inputs.files fileTree('public')
     inputs.files fileTree('src')
 
     // 'node_modules' appeared not reliable for dependency change detection (the task was rerun without changes)
@@ -40,7 +39,7 @@ npm_run_build {
     inputs.file 'package.json'
     inputs.file 'package-lock.json'
 
-    outputs.dir 'build/dist'
+    outputs.dir 'build/'
 }
 
 // pack output of the build into JAR file

@@ -69,7 +69,10 @@ public class JsonReporter {
             if(!jsonPath.exists()){
                 jsonPath.createNewFile();
             }
-            gson.toJson(obj, new FileWriter(jsonPath));
+            FileWriter writer = new FileWriter(jsonPath);
+            gson.toJson(obj, writer);
+            writer.flush();
+            writer.close();
 
         }
     }

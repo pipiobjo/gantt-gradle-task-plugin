@@ -1,12 +1,19 @@
 import _ from 'lodash';
-// import 'plottable/plottable.css';
 import './gantt.css';
-// import * as Plottable from 'plottable';
 import DataHandler from "./DataHandler";
 import * as d3 from "d3";
 
+
+import jsonData from './gantt.json';
 console.log("data=", data);
-let dataHandler = new DataHandler(data);
+console.log("jsonData=", jsonData);
+
+let dataHandler;
+if(jsonData){
+    dataHandler = new DataHandler(jsonData);
+}else{
+    dataHandler = new DataHandler(data);
+}
 
 
 const createDataCacheById = data => {
@@ -153,6 +160,12 @@ const createElementData = (data, elementHeight, xScale, fontSize) =>
         };
     });
 
+function randStrokeColor() {
+    var r = ('0'+(0).toString(16)).slice(-2), // no red color
+        g = ('0'+(Math.random()*256|0).toString(16)).slice(-2),
+        b = ('0'+(Math.random()*256|0).toString(16)).slice(-2);
+    return '#' +r+g+b;
+}
 
 // chart.renderTo("#chart-container");
 const createPolylineData = (rectangleData, elementHeight, criticalPath) => {
@@ -176,18 +189,15 @@ const createPolylineData = (rectangleData, elementHeight, criticalPath) => {
                 let thickness
                 if(isTaskTupleOnCriticalPath){
                     color = 'red'
-                    thickness = 3
+                    thickness = 4
                 }else{
-
-                    color = '#' + (Math.max(0.1, Math.min(0.9, Math.random())) * 0xFFF << 0).toString(16);
+                    color = randStrokeColor();
                     thickness = 1
                 }
 
                 // increase the amount rows occupied by both parent and current element (d)
                 storedConnections[parent.id]++;
                 storedConnections[d.id]++;
-
-
 
                 const deltaParentConnections = storedConnections[parent.id] * (elementHeight / 4);
                 const deltaChildConnections = storedConnections[d.id] * (elementHeight / 4);
@@ -261,13 +271,15 @@ const createGanttChart = (placeholder, data, {elementHeight, sortMode, showRelat
 // start drawing the chart
 var chartContainerEle = document.getElementById("chart-container");
 
+let svgwidth = data.length * 60;
+
 let config = {
     "elementHeight": 25,
     "sortMode": null,
     "showRelations": false,
     "svgOptions": {
         "fontSize": 6,
-        "width": 1500,
+        "width": svgwidth,
         "height": 1000
     }
 

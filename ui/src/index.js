@@ -4,9 +4,23 @@ import DataHandler from "./DataHandler";
 import * as d3 from "d3";
 
 
-import jsonData from './gantt.json';
+// import jsonData from './gantt.json'
+var jsonData;
+try {
+    jsonData = require('./gantt.json');
+    console.log("jsonData=", jsonData);
+} catch (e) {
+    if (e.code !== 'MODULE_NOT_FOUND') {
+        throw e;
+    }else{
+        console.log("no external json data found")
+    }
+}
+
+
+// const jsonData = require('./gantt.json')
 console.log("data=", data);
-console.log("jsonData=", jsonData);
+
 
 let dataHandler;
 if(jsonData){

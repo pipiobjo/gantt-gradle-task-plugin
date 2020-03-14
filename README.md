@@ -7,7 +7,7 @@
 Plugin to trace all executed gradle tasks with start, end time and their dependencies. 
 Finally they are rendered in gantt chart
 
-
+The plugin is available via the official repos https://plugins.gradle.org/plugin/de.pipiobjo.gradle.plugin.GanttGradleTaskPlugin
 
 ```groovy
 

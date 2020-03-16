@@ -2,6 +2,9 @@
 
 
 ![Develop Build](https://github.com/pipiobjo/gantt-gradle-task-plugin/workflows/Develop%20Build/badge.svg?branch=develop)
+![Release Build](https://github.com/pipiobjo/gantt-gradle-task-plugin/workflows/Release%20Build/badge.svg?)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/pipiobjo/gantt-gradle-task-plugin)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 
 
 Plugin to trace all executed gradle tasks with start, end time and their dependencies. 
